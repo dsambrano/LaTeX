@@ -1,0 +1,54 @@
+\documentclass[12pt]{article} % sets up doc as APA manuscript as opposed to journal, and used natbib and apacite for propper citations because that was the best procedure according to the creator of apa6 see here: http://www.tug.org/pracjourn/2012-1/beitzel/beitzel.pdf
+\usepackage[margin=1in,footskip=0.25in]{geometry} %Sets up the 
+\usepackage[natbibapa]{apacite} 
+%\usepackage{natbib}
+\usepackage{parskip}
+\setlength{\parskip}{12pt} % white space between paragraphs
+\usepackage{amsmath} % for math text
+\usepackage{graphicx} % for graphs and figures
+\usepackage[T1]{fontenc} % changing font to text
+\usepackage[utf8]{inputenc} % changing font to text
+\usepackage{mathptmx} % changing font to text
+\setlength{\parindent}{.5in} % how much do you want the paragraph to be indented
+\usepackage{setspace}
+\renewcommand\bibsection{\centering\refname\parskip}
+\usepackage[mdyy]{datetime}
+\usepackage{url} % Package for URLs
+\AtBeginDocument{\urlstyle{APACsame}} % Makes sure URLs in references are formatted correctly.
+\usepackage[colorinlistoftodos]{todonotes} % For comments and specifying comment colors
+
+
+\definecolor{light-gray}{gray}{0.95} % Setting the background color for all code text
+\newcommand{\code}[1]{\colorbox{light-gray}{\texttt{#1}}} % Creating a function to make text that looks like code
+
+\begin{document}
+\pagenumbering{gobble} % removes page numbers
+%\doublespace % For those who prefer double spacing 
+%\raggedright % For those who don't like justified 
+%\sloppy % For those who dont like hyphenated text
+ \begin{flushright}
+	 Deshawn Sambrano\textbf{\\}
+	 Psych Course\# \\
+	 \today
+ \end{flushright}
+ 
+ \begin{center}
+	 Your very creative title
+ \end{center}
+ \par\textbf{Introduction:} Here is a brief \LaTeX template that I made for simple assignments that require an APA bibliography. 
+ 
+  
+  \textbf{Citation:} Citing is simple and easy in \LaTeX. Just use the \code{$\backslash$citep} command like this \citep[e.g.,][]{Balcetis2006, Mijovic2010}. But don't forget to run BibTex or else you wont get your references For more advanced apa citing options or for more information on why you should use \LaTeX and to learn about some of \LaTeX's formatting options see my APA Sweave template \citep[also see the apacite \LaTeX package for citation information]{template}.
+\bibnewpage
+\bibliographystyle{apacite}
+\doublespacing
+%\setlength\bibsep{\baselineskip}
+\setlength\bibhang{.5in}
+  \bibliography{mybib}
+
+
+  %\newpage
+  %\appendix
+  
+  
+\end{document}

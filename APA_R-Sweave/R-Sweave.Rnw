@@ -1,0 +1,360 @@
+%%------------------------------ READ ME --------------------------------------
+%% This template uses the apa6 class in LaTeX and adapts it to fix some of the 
+%%    formating errors. It was designed to combine and embed your R analyses 
+%%    and plot into your APA formatted manuscript. I have included comments on
+%%    nearly all components in order to explain the purpose for each line of 
+%%    code. To get started see instructions below.
+%%
+%% Copyright (C) 2016 by Deshawn Sambrano <3dbrano3@csu.fullerton.edu>
+%%
+%%
+%% This work may be distributed and/or modified under the
+%%    conditions of the LaTeX Project Public License (LPPL), either
+%%    version 1.3c of this license or (at your option) any later
+%%    version.  The latest version of this license is in the file:
+%% 
+%% http://www.latex-project.org/lppl.txt
+%% 
+%% Users may freely modify these files without permission, as long as the
+%%    copyright line and this statement are maintained intact.
+%% 
+%% This work is not endorsed by, affiliated with, or probably even known
+%%    by, the American Psychological Association.
+%%
+%%-----------------------------------------------------------------------------
+
+
+%------------------------------ Instructions ----------------------------------
+% This is a RSweave document (.Rnw file)
+%
+  % First ensure your preferences are set up for knitr. On MAC "cmd + ," -> 
+  %   Sweave -> Weave Rnw files using: Select knitr. This code will not work if  
+  %   you are select Sweave (default).
+  %
+  % Then you will need to compile it first with cmd + shift + k (MAC) and you 
+  %   will get an error that says "Line X Citation 'YYYY' on page X undefined 
+  %   on input line Z. ===> Thats ok, then you will need to compile again  
+  %   (i.e., cmd + shift + k) and then it should automatically print the pdf  
+  %   file. (If its the first time you are compiling the doc, you will likely  
+  %   need to compile a third time to produce the document).
+  %
+  % Note: It will give you 2 issues 1 warning because it could not produce the 
+  %   exact color and 1 underfull box from and equation. 
+  %   Both are fine and it will still compile the PDF with these issues.
+  %
+  % Finally, use the comments to understand and alter any code for your own 
+  %   manuscript/analyses.
+%
+%
+% For more information on Sweave check out the sweave manual: 
+%     https://www.statistik.lmu.de/~leisch/Sweave/Sweave-manual.pdf
+%
+% For more brief tutorial on Sweave go here: 
+%     https://rpubs.com/YaRrr/SweaveIntro
+%%-----------------------------------------------------------------------------
+
+
+
+% LaTeX produces everything in a PDF file. Many journals are now accepting .tex files
+%   as submissions to their journals. In other cases you may want to conver this to word
+%   I have the best experience by converting with adobe acrobat, with the exceptions of 
+%   figures and accents, it does a really good job of converting everything. 
+
+
+
+
+\documentclass[a4paper, man, noextraspace, natbib, floatsintext]{apa6} % sets up doc as APA manuscript as opposed to journal, and used natbib and apacite for propper citations because that was the best procedure according to the creator of apa6 see here: http://www.tug.org/pracjourn/2012-1/beitzel/beitzel.pdf. Lastly, floatsintext puts the tables and figures in the text instead of at the end if desired.
+% Often when submitting to journals one must remove idetifiable information [e.g., author names and affiliations as well as citations from the author (both in text and in reference list)] adding the mask option will automatically take care of that for you. For masking citations preppend mask to \cite function, e.g., \maskcite
+% If you want to note that this is a working draft you can add a watermark to the first page with draft first or to all pages with draftall
+% For more information on the apa6 class go here: http://mirror.utexas.edu/ctan/macros/latex/contrib/apa6/apa6.pdf
+\usepackage[american]{babel} % For citations
+\usepackage{amsmath} % For math text
+\usepackage{graphicx} % For graphs and figures
+\usepackage[colorinlistoftodos]{todonotes} % For comments and specifying comment colors
+\usepackage{hyperref} % For hyperlinks
+\usepackage{url} % Package for URLs
+\AtBeginDocument{\urlstyle{APACsame}} % Makes sure URLs in references are formatted correctly.
+\setlength{\bibsep}{0pt plus 0.1ex} % Corrects distance between Reference header and bib enteries.
+
+
+% Option 1 for changing font to Times New Roman, this requires that you compile with pdfLaTeX, can be changed in preferences (cmd + , for MAC) -> Sweave -> Typesset LaTeX document into:
+\usepackage[T1]{fontenc} % changing font to text
+\usepackage[utf8]{inputenc} % changing font to text
+\usepackage{mathptmx} % changing font to text
+
+% Option 2 for changing font Times New Roman, but this requires that you compile with XeLaTeX, can be changed in preferences (cmd + , for MAC) -> Sweave -> Typesset LaTeX document into:
+% \usepackage{fontspec,xunicode}
+% \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+% \setmainfont{Times New Roman}
+
+
+
+\RequirePackage{float} % Loads required package to make table captions on top instead of on bottom
+\floatstyle{plaintop} % State that you want captions on top
+\restylefloat{table} % States you only want captions on top for tables
+\usepackage{parskip} % package to adjust paragraph spacing
+\setlength{\parskip}{0pt} % Makes sure there is no added space between paragraphs
+\usepackage{pdflscape} %landscape pages
+\usepackage{rotating} % Landscape pages
+
+% IMPORTANT SPACING INFORMATION FOR THOSE ATTEMPTING TO PRODUCE A MANUSCRIPT STYLE DOCUMENT
+% One issue with the apa6 LaTeX class is that for manuscript style documents it adds an additional space before and after 
+%     headings 1 and 2. You can include the noextraspace option (which I did above) but the astute observer will note that 
+%     it still adds addition space, just less. Unfortunately, that was built into the apa6 class and LaTeX does not allow for
+%     users to manually edit built in classes. I have created a hack to reduce to space as much as possible, but because of 
+%     the way it is built into the classes there are important things readers should be aware of:
+%     
+%     1. It cannot eliminate all space, but it can minimize it such that it has at most 2ex of space on top of below
+%     2. This is just a hack and I make no promises that it will work in every instance. I have not tested this myself 
+%           on complex documents only those with primary headings (if someone has a better way, please let me know).
+%     3. It will produce warnings; however, the pdf will still be created. As such, I HIGHLY reccomend that you complete the
+%           document with the following lines comented out and only uncomment them once you want to compile the FINAL draft.
+%     IF YOU ARE A STICKLER ABOUT THE HEADER SPACING AND OR YOU CANNOT GET THIS CODE TO WORK FOR YOU, YOU CAN USE \vspace{-6pt}
+%         IN COMBINATION WITH THE HEADERS. It is a lot messier but you will have more control of individual variation in spacing
+%         (adjust -6pt accordingly;)
+
+
+%\usepackage{titlesec}
+
+%\titlespacing\section{0pt}{0pt plus 0pt minus 0pt}{0pt plus 0pt minus 0pt}
+%\titlespacing\subsection{0pt}{0pt plus 0pt minus 0pt}{0pt plus 0pt minus 0pt}
+%\titlespacing\subsubsection{0pt}{0pt plus 0pt minus 0pt}{0pt plus 0pt minus 0pt}
+
+
+
+
+
+\definecolor{light-gray}{gray}{0.95} % Setting the background color for all code text
+\newcommand{\code}[1]{\colorbox{light-gray}{\texttt{#1}}} % Creating a function to make text that looks like code
+
+\title{RSweave APA Template in \LaTeX: Embed R code in your documents} % Insert your title here
+\shorttitle{RSweave APA Template in \LaTeX} % Insert your short title, will be used for running head
+\author{Deshawn Sambrano} % Insert authors here. If you have multple authors you can use \twoauthor{} \threeauthor{} etc.
+\affiliation{California State University, Fullerton} % Insert affiliation. See above for multiple author affiliations
+\authornote{Email: \href{mailto:3dbrano3@csu.fullerton.edu}{3dbrano3@csu.fullerton.edu}}  % Insert any other notes
+\note{Last Modified: \today} % Insert any notes here
+\abstract{Insert your abstract here.}
+\keywords{APA \LaTeX, Sweave, R, knitr}  % Insert any notes here
+
+\begin{document}
+%\SweaveOpts{concordance=TRUE}, only if you are using Sweave instead of knitr, not recommended because then you can change to Times New Roman and some of the options are slightly different (e.g., fig.height needs to be height) and will likely not work as this document is currently structured. 
+\maketitle % Make Title Page
+
+%%%%%%%%%%%%%%%%% Introduction
+%\section{Introduction} % Primary heading
+I created this template because of \begin{seriate}
+\item the growing concern for reproducibility (in addition to replicability) and
+\item because I like most researchers what to spend my time researching, not formatting documents or reordering page, table, or figure numbers etc. 
+\end{seriate} The great benefit of Sweave is that you can have a single document in which you have your manuscript [with all of the benefits of using \LaTeX (automatically format references, figures, tables, etc.)] and your analytic code. This allows researchers to have truly reproducible reports. You no longer need to separate files for your code and your manuscript (which can lead chaotic file naming with several documents titled FINAL, but which did you actually use\ldots). 
+
+The second equally important benefit of having your manuscript and R code \citep{Rcore} in the same place is that you no longer need to run the analyses and then take the long tedious process of copying and pasting all of the values over to the document (not to mention if something changes and have to redo it\ldots). Using Sweave you can embed the analyses in the document and then have it automatically print values (e.g., means, standard deviations, F-values, p-values, etc) and better yet, if you change any analyses, it will automatically update in your document with the new values! In this document, I will include various common elements of an APA style paper including headings (levels 1:4), lists; \emph{italic} text (also can be done with \code{$\backslash$textit\{\}}); \textbf{bold} face text; inserting R code both as chunks and as single values or lines; effect sizes (e.g., $\eta^2$) , \emph{F}-ratios, and \emph{p}-values (as well as how to use R to insert these values automatically); citing in parentheses and in-text; as well as inserting tables and figures.
+\subsection{Affect} % Secondary heading
+I study emotion and decision making, and this template will semi-reflect that. In this section I would talk about affect. Researchers use affect as the umbrella term which encompasses both mood and emotion.
+\subsubsection{Mood} % Tertiary heading 
+Researchers tend to use mood to describe affect that is long lasting as opposed to emotion (short term affect).
+
+%%%%%%%%%%%%%% Emotion
+\subsubsection{Emotion} % Tertiary heading
+There are several theories of emotion (e.g., valance-arousal, approach-avoidance, and discrete emotion theories). My favorite emotion is Sadness. 
+
+
+% Start a new page like this:
+\newpage
+New pages can be started with the \code{$\backslash$newpage\{\}} %command and add vertical or horizontal space with \code{$\backslash$vspace\{\}} and \code{$\backslash$hspace\{\}}, respectively.
+%%%%%%%%%%%%%% Sadness
+\paragraph{Sadness} % Quartinary heading
+Here are some examples of how to cite in \LaTeX. For this template I housed all the references in the example.bib file. \LaTeX uses the BibTeX format for citations, which is a common citation format and can be produced with most citation machines. I store all of my references with endnote and create the .bib file with JabRef. The first example is with in-text citations in parentheses with, e.g., included. There is evidence that sadness can help you process information more systematically \citep[e.g., ][]{Phelps2014}. Notice how the citation automatically includes et al. because it has been cited previously \citep{Phelps2014}. In order to cite in the format author (year) you use \code{$\backslash$cite\{\}}). \cite{Pessoa2008} showed interconnectivity between ``emotional" and ``cognitive" regions in the brain (e.g., amygdala and DLPFC, respectively). You can cite with page numbers like this \citep[p.~23]{Pessoa2013}. You can also insert citations that are only included in the reference list but not in text like this \nocite{psych}. The last examples I will show are with displaying the citation number [\citenum{Pessoa2013}], author only \citeauthor{Pessoa2013}, and year only \citeyear{Pessoa2013}. \LaTeX will automatically include all of these in your reference list and for those with that are numbered or end with et al. it will automatically update as you add or remove references. 
+% You can find other citation styles here: ftp://ftp.dante.de/pub/tex/biblio/bibtex/contrib/apacite/apacite.pdf
+
+
+% To make a new paragraph just skip two lines like I did above
+To make a new pararaph within a section just simply skip two lines like I did above.
+% Lists. Notice how a single skip does not start a new paragraph. 
+Occasionally you might want to make inline lists like this one.
+\begin{seriate}
+\item first item,
+\item second item.
+\end{seriate}
+On the other hand, your paper may require you to make a numbered (separate lined) list. You can also do that like this
+\begin{APAenumerate}
+\item First hypothesis \ldots~\ldots~\ldots continue %by default LaTeX does not seperate function with white space in text, so you can seperate them with the ~ 
+\item Second hypothesis \ldots~\ldots~\ldots continue
+\end{APAenumerate}
+And it looks like this as you continue typing.
+
+
+\subparagraph{Edits} % fifth level heading
+You can also add nicely colored comments that are great for remind and edits.
+\todo[inline, color=red!40]{Typo on remindERS.}
+
+%%%%%%%%%%%%%%%%% Methods
+\section{Methods} % Primary heading
+
+%%%%%%%%%%%%%% Participants
+\subsection{Participants} % Secondary heading
+We had 54 participants (50\% female; see Table~\ref{tab:maintable}). Insert more information about the participants.  % In order to use type a percent sign you have to type \%
+
+%%%%%%%%%%%%%% Materials
+\subsection{Materials} % Secondary heading
+Participants rated their emotions on a sliding scale 1 = \textit{Not emotional} to 100 = \textit{Intense emotion}.% Not emotional and Intense emotion are italicized.
+
+% Making Tables in LaTeX are easy and you can customize them however you want. 
+\begin{table}[t] % The [t] indicates to put the table on the top of the page
+\centering % center table
+\begin{tabular}{lc} % specify you want 2 colum table with left colum aligned left and the right colum aligned center. You can include | between l and c if you want a veritcal line between colum 1 and 2
+% columns are separated by & and rows are separated by \\
+\hline % add a horizontal line for the table
+Gender & Frequency\\\hline % Inserts topic row and put a horiontal line underneath
+Female & 27\\
+Male & 27\\
+\hline
+\multicolumn{2}{l}{\textit{Note}. You can insert a note like this.} % Allows the not to go through all colums of the table
+\end{tabular}
+\caption{\label{tab:maintable} Frequency separated by gender and emotion condition.} % Creates the caption for the figure and the label which allows you to reference them in text.
+\end{table} % ends table
+
+%%%%%%%%%%%%%% Procedures
+\subsection{Procedures} % Secondary heading
+They watched each movie clip and then rated their emotions. More information about procedures with sample \textbf{bold} text. You might have a figure to illustrate your design. You can either create them in R or upload figures from JPEGs, PNGs, or PDFs. For example see Figure~\ref{fig:Rlogo}.
+
+
+% Uploading figures
+\begin{figure}[H] % When uploading image must specifiy position. [H] indicatest to place here (where it is referenced).
+% For other options see: https://www.sharelatex.com/learn/Positioning_images_and_tables
+\centering % Center image
+\includegraphics[width=2in]{Rlogo.png} % Calls in the file and specifies dimensions.
+\caption{\label{fig:Rlogo}Type your figure caption here. Ex. This is the R studio logo.} % Creates the caption for the figure and the label which allows you to reference them in text.
+\end{figure}
+
+If you want to display equations inline you can do it like this: $f(x) = ax^2 + bx + c$. You can create bigger equations (e.g., those using $\sum$) like this. 
+$$\sum_{i}^{n} (X_i - \bar{X})^2$$ Alternatively, you can display equations with apa style with equation numbers like this: 
+\begin{equation}
+\frac{d}{dx}\sin{x} = \cos{x}\frac{du}{dx}
+\end{equation}
+or 
+\begin{equation}
+\int 2ax + b = ax^2 + bx + C % Don't forget your constant 
+\end{equation}
+
+%%%%%%%%%%%%%%%%% Results
+\section{Result} % Primary heading
+\label{sec:findings} % Sample label, useful when you state more information in section ... this is make it a hyperlink
+
+
+
+% Below is an example of how you create chunks of R code inside your LaTeX document. This is one of the best features of having Sweave documents because you have have you R code and manuscript in the same file. Additionally, it allows you to ensure that you can reproduce your findings since all analyses are done in the same location. Lastly, this allows you to insert values from your R code directly into your manuscript. Gone are the day of running analyses in a seperate file and copying and pasting the values into your document. Have LaTeX grab the values for you. Best part if you change your analyses, your manuscript with update automatically!!!
+
+<<mainresults, echo=F, message=F, warning=F, include=F>>=
+
+# mainresuls is the label I gave this chunck of code.
+# echo = F makes it so you do not see the code input just the output
+# messages and warnings allow you to control the warnings and messages from R code in the LaTeX file
+# include=F makes it so the output is not displayed, often useful to use both for papers. You can always run the lines of R code to make sure they are producing the correct output first
+# If you are still testing code (and have errors) but want to have the compile the document, add ", eval=F" that will make it so that chuck of R code is not evaluate. (If there are errors in the document or the R code, it would not compile the PDF)
+
+
+
+# In the example above I showed you how to set the options for this individual chunk of R code. Alternatively, you can also set global options that will apply to all code chunk at once:
+# opts_chunk$set(echo = F,
+#                message = F,
+#                warning = F) if you want more global options just continue like this 
+
+
+
+
+#### You can run this chucks of via R first to confirm you have no errors before compling them into the document. 
+
+# I have created a function that will take your p-value and print it an APA version
+apa.p.value <- function(x) { 
+if(x > .1) {paste("> ", ".05", sep="")} # If p value is greater than .1 then print "> .05"
+if(x > .05 & x <= .1) {paste("= ", round(x,2), sep="")} # If p value is greater than .05 but less than .1 then print "= " + actually p-value rounded to 2 decimal places
+if(x > .01 & x <= .05) {paste("= ", round(x,2), sep="")} # If p value is greater than .01 but less than .05 then print "= " + actually p-value rounded to 2 decimal places
+# alternatively can be {paste("< ", ".05", sep="")} which prints "< .05"
+if(x > .001 & x <= .01) {paste("< ", ".01", sep="")}  # If p value is greater than .001 but less than .01 then print "> .01"
+if(x < .001) {paste("< ", ".001", sep="")} # If p value is greater than .001 then print "> .001"
+}
+
+
+library(lsr) # for eta Squared
+gender <- as.factor(rep(c("female", "male"), 27)) # Setting up a mock gender variable
+emotion <- as.factor(rep(c("sad", "happy"), each = 27)) # Setting up a mock emotion variable
+ip <- c(rnorm(27, 75, 15), rnorm(27, 48.8, 11)) # Setting up the mock information processing style variable (DV)
+data <- data.frame(cbind(gender, emotion, ip)) # Making it all into a dataset
+fit <- aov(ip ~ gender*emotion) # Running an anova on the data with emotion and gender
+(results1 <- anova(fit)) # Getting output from the data
+esize <- etaSquared(fit) # Get effect sizes for the data
+fit1 <- aov(ip ~ emotion) # Run a second anova with just emotion 
+anova(fit1) # Getting output from the data
+esize2 <- etaSquared(fit1) # Get effect sizes for the data
+library(psych) # Used to get summary data by groups
+sum.data <- describeBy(ip, group = emotion, mat = T) # Get summary statistics seperated by emotion
+@
+
+% \Sexpr{} allows you to print info from R code into the text
+
+We found a significant difference in information processing style based on emotion, \textit{F}(\Sexpr{results1["emotion", "Df"]}, \Sexpr{results1["Residuals", "Df"]}) = \Sexpr{round(results1["emotion", "F value"],2)}, \textit{p} \Sexpr{apa.p.value(results1["emotion", "Pr(>F)"])}, Partial $\eta^2$ = \Sexpr{round(esize["emotion", "eta.sq.part"],2)}. Those that were sad (\textit{M} = \Sexpr{round(sum.data[2, "mean"],2)}, \textit{SD} = \Sexpr{round(sum.data[2, "sd"],2)}) were used more analytic processing style than those who were in the happy condition (\textit{M} = \Sexpr{round(sum.data[1, "mean"],2)}, \textit{SD} = \Sexpr{round(sum.data[1, "sd"],2)}; see Figure~\ref{fig:mainplot}). Other common effect sizes $R^2$ and $r^2$. 
+
+
+
+% Creating a figure with R and inserting it.
+\begin{figure}[t] % Commands to include a figure, [t] indicates to place the figure at the top.
+<<mainplot, echo=F, fig.height=2, fig.width=3, fig.align='center', message=F, warning=F, include=T>>=
+# fig=TRUE includes plot in manuscript
+# fig.align specifies the alignment of the figure
+# fig.height and fig.width specify the dimensions in inches
+
+
+# Means and SE Plot with GGplot
+library(ggplot2) # To plot data
+library(Rmisc) # To reorganize data
+plotdata <- summarySE(data, measurevar="ip", groupvars=c("emotion")) #organizes data to be plotted
+plotdata$emotion <- factor(plotdata$emotion, levels = c(1,2), labels = c("happy", "sad")) # recode as a factor
+
+# Plot
+ggplot(plotdata, aes(x=emotion, y=ip, fill=emotion)) + #set up fill colors and indicates the variables that will be used
+geom_bar(position=position_dodge(), stat="identity", # Makes bar plot
+colour="black", # Use black outlines,
+#fill = c("#b3b3b3", "#5900b3"), 
+size=.3) + # Set size of error bars
+  scale_fill_manual(values=c("#b3b3b3", "#5900b3")) +
+  geom_errorbar(aes(ymin=ip-se, ymax=ip+se), # Add error bars
+                width=.1, # Set width of error bars
+                size=.3) + # Set size of error bars
+  labs(x = "Emotion Condition", y = "Participant's Avg Info Processing") + # Set x- and y- axis labels
+  theme(text = element_text(size=6), # Set font size
+        axis.line.x = element_line(size = .3, colour = "black", linetype = 1), # Include x axis label
+        axis.line.y = element_line(size = .3, colour = "black", linetype = 1), # Include y axis label
+        panel.background = element_rect(fill = "white")) + # Make background white
+  guides(fill = guide_legend(title = "Condition",keywidth = 1, keyheight = 1)) # Make legend smaller and change title
+
+############### There will be a warning: "Do you need to adjust the group aesthetic?", its fine you can ignore it.
+@
+  
+  \caption{\label{fig:mainplot}Bar graph displaying the information processing means between emotion conditions.} % Creates the caption for the figure and the label which allows you to reference them in text.
+\end{figure}
+
+
+
+
+%%%%%%%%%%%%%%%%% Discussion
+\section{Discussion} % Primary heading
+I hope that you were able to learn the basic elements of APA formatting in \LaTeX with this template. If you find any issues or have any comments of suggestions please contact me \href{mailto:3dbrano3@csu.fullerton.edu}{3dbrano3@csu.fullerton.edu}. Additionally, please cite me when you use this template in addition to all of the packages that made this possible (all citations below and BibTex versions in example.bib): R Core team, Rmisc package, psych package, lsr package, ggplot package, plyr package, lattice package. 
+
+\bibliography{example} % This is where I attached the bibliography file to the document
+\nocite{*} % Include all references in bibliography even if they are not included even if they are not cited in the document. Useful for citing R and R packages.
+
+\newpage
+\begin{landscape}
+\appendix %Starts the appendix
+\section{Landscape}
+\pagenumbering{gobble} %removes page number
+\fancyhf{} % sets both header and footer to nothing
+\renewcommand{\headrulewidth}{0pt} % Removes the header 
+\begin{figure} % You can also use sidewaysfigure or sidewaystable if you dont want to rotate the page, but just the figure
+    \centering % Center image
+    \includegraphics[width=2in]{Rlogo.png}
+    \caption{Demonstration of creating landscape figures in \LaTeX}
+    \label{fig:PropProf}
+\end{figure}
+\end{landscape}
+\end{document}
