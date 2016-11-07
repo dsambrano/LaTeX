@@ -63,7 +63,7 @@
 
 
 
-\documentclass[a4paper, man, noextraspace, natbib, floatsintext]{apa6} % sets up doc as APA manuscript as opposed to journal, and used natbib and apacite for propper citations because that was the best procedure according to the creator of apa6 see here: http://www.tug.org/pracjourn/2012-1/beitzel/beitzel.pdf. Lastly, floatsintext puts the tables and figures in the text instead of at the end if desired.
+\documentclass[man, noextraspace, natbib, floatsintext]{apa6} % sets up doc as APA manuscript as opposed to journal, and used natbib and apacite for propper citations because that was the best procedure according to the creator of apa6 see here: http://www.tug.org/pracjourn/2012-1/beitzel/beitzel.pdf. Lastly, floatsintext puts the tables and figures in the text instead of at the end if desired.
 % Often when submitting to journals one must remove idetifiable information [e.g., author names and affiliations as well as citations from the author (both in text and in reference list)] adding the mask option will automatically take care of that for you. For masking citations preppend mask to \cite function, e.g., \maskcite
 % If you want to note that this is a working draft you can add a watermark to the first page with draft first or to all pages with draftall
 % For more information on the apa6 class go here: http://mirror.utexas.edu/ctan/macros/latex/contrib/apa6/apa6.pdf
@@ -120,7 +120,7 @@
 %\titlespacing\subsection{0pt}{0pt plus 0pt minus 0pt}{0pt plus 0pt minus 0pt}
 %\titlespacing\subsubsection{0pt}{0pt plus 0pt minus 0pt}{0pt plus 0pt minus 0pt}
 
-
+\raggedbottom % May need to include this 
 
 
 
