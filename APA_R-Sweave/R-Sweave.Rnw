@@ -73,14 +73,29 @@
 \usepackage[colorinlistoftodos]{todonotes} % For comments and specifying comment colors
 \usepackage{hyperref} % For hyperlinks
 \usepackage{url} % Package for URLs
+\usepackage[capitalise, noabbrev]{cleveref} % To use cref
 \AtBeginDocument{\urlstyle{APACsame}} % Makes sure URLs in references are formatted correctly.
 \setlength{\bibsep}{0pt plus 0.1ex} % Corrects distance between Reference header and bib enteries.
 
+\RequirePackage{float} % Loads required package to make table captions on top instead of on bottom
+
+\floatstyle{plaintop} % State that you want captions on top
+\restylefloat{table} % States you only want captions on top for tables
+\usepackage{tabu} % Tables option 2
+\usepackage{longtable} % For tables that go onto multiple pages
+\usepackage{subcaption} % Create Panel figures
+\crefname{subsection}{subsection}{subsections}
+\captionsetup[subfigure]{justification=centering}
 
 % Option 1 for changing font to Times New Roman, this requires that you compile with pdfLaTeX, can be changed in preferences (cmd + , for MAC) -> Sweave -> Typesset LaTeX document into:
 \usepackage[T1]{fontenc} % changing font to text
 \usepackage[utf8]{inputenc} % changing font to text
 \usepackage{mathptmx} % changing font to text
+
+%optional for inserting pdfs for figures. 
+\usepackage{pgf}
+\usepackage{pgfpages}
+\usepackage{pdfpages}
 
 % Option 2 for changing font Times New Roman, but this requires that you compile with XeLaTeX, can be changed in preferences (cmd + , for MAC) -> Sweave -> Typesset LaTeX document into:
 % \usepackage{fontspec,xunicode}
@@ -145,25 +160,23 @@
 I created this template because of \begin{seriate}
 \item the growing concern for reproducibility (in addition to replicability) and
 \item because I like most researchers what to spend my time researching, not formatting documents or reordering page, table, or figure numbers etc. 
-\end{seriate} The great benefit of Sweave is that you can have a single document in which you have your manuscript [with all of the benefits of using \LaTeX (automatically format references, figures, tables, etc.)] and your analytic code. This allows researchers to have truly reproducible reports. You no longer need to separate files for your code and your manuscript (which can lead chaotic file naming with several documents titled FINAL, but which did you actually use\ldots). 
+\end{seriate} The great benefit of Sweave is that you can have a single document in which you have your manuscript [with all of the benefits of using \LaTeX~(automatically format references, figures, tables, etc.)] and your analytic code. This allows researchers to have truly reproducible reports. You no longer need to separate files for your code and your manuscript (which can lead chaotic file naming with several documents titled FINAL, but which did you actually use\ldots). 
 
-The second equally important benefit of having your manuscript and R code \citep{Rcore} in the same place is that you no longer need to run the analyses and then take the long tedious process of copying and pasting all of the values over to the document (not to mention if something changes and have to redo it\ldots). Using Sweave you can embed the analyses in the document and then have it automatically print values (e.g., means, standard deviations, F-values, p-values, etc) and better yet, if you change any analyses, it will automatically update in your document with the new values! In this document, I will include various common elements of an APA style paper including headings (levels 1:4), lists; \emph{italic} text (also can be done with \code{$\backslash$textit\{\}}); \textbf{bold} face text; inserting R code both as chunks and as single values or lines; effect sizes (e.g., $\eta^2$) , \emph{F}-ratios, and \emph{p}-values (as well as how to use R to insert these values automatically); citing in parentheses and in-text; as well as inserting tables and figures.
+The second equally important benefit of having your manuscript and R code \citep{Rcore} in the same place is that you no longer need to run the analyses and then take the long tedious process of copying and pasting all of the values over to the document (not to mention if something changes and you have to redo it\ldots). Using Sweave you can embed the analyses in the document and then have it automatically print values (e.g., means, standard deviations, F-values, p-values, etc) and better yet, if you change any analyses, it will automatically update in your document with the new values! In this document, I will include various common elements of an APA style paper including headings (levels 1:4), lists; \emph{italic} text (also can be done with \code{$\backslash$textit\{\}}); \textbf{bold} face text; inserting R code both as chunks and as single values or lines; effect sizes (e.g., $\eta^2$) , \emph{F}-ratios, and \emph{p}-values (as well as how to use R to insert these values automatically); citing in parentheses and in-text; as well as inserting tables and figures.
 \subsection{Affect} % Secondary heading
-I study emotion and decision making, and this template will semi-reflect that. In this section I would talk about affect. Researchers use affect as the umbrella term which encompasses both mood and emotion.
+I study emotion and decision making, and this template will semi-reflect that. In this section I would talk about affect. Researchers use affect as the umbrella term which encompasses both mood and emotion (as well as some other affective states).
 \subsubsection{Mood} % Tertiary heading 
 Researchers tend to use mood to describe affect that is long lasting as opposed to emotion (short term affect).
 
 %%%%%%%%%%%%%% Emotion
 \subsubsection{Emotion} % Tertiary heading
 There are several theories of emotion (e.g., valance-arousal, approach-avoidance, and discrete emotion theories). My favorite emotion is Sadness. 
-
-
 % Start a new page like this:
-\newpage
+% \newpage
 New pages can be started with the \code{$\backslash$newpage\{\}} %command and add vertical or horizontal space with \code{$\backslash$vspace\{\}} and \code{$\backslash$hspace\{\}}, respectively.
 %%%%%%%%%%%%%% Sadness
 \paragraph{Sadness} % Quartinary heading
-Here are some examples of how to cite in \LaTeX. For this template I housed all the references in the example.bib file. \LaTeX uses the BibTeX format for citations, which is a common citation format and can be produced with most citation machines. I store all of my references with endnote and create the .bib file with JabRef. The first example is with in-text citations in parentheses with, e.g., included. There is evidence that sadness can help you process information more systematically \citep[e.g., ][]{Phelps2014}. Notice how the citation automatically includes et al. because it has been cited previously \citep{Phelps2014}. In order to cite in the format author (year) you use \code{$\backslash$cite\{\}}). \cite{Pessoa2008} showed interconnectivity between ``emotional" and ``cognitive" regions in the brain (e.g., amygdala and DLPFC, respectively). You can cite with page numbers like this \citep[p.~23]{Pessoa2013}. You can also insert citations that are only included in the reference list but not in text like this \nocite{psych}. The last examples I will show are with displaying the citation number [\citenum{Pessoa2013}], author only \citeauthor{Pessoa2013}, and year only \citeyear{Pessoa2013}. \LaTeX will automatically include all of these in your reference list and for those with that are numbered or end with et al. it will automatically update as you add or remove references. 
+Here are some examples of how to cite in \LaTeX. For this template I housed all the references in the example.bib file. \LaTeX~uses the BibTeX format for citations, which is a common citation format and can be produced with most citation machines. I store all of my references with endnote and create the .bib file with JabRef. The first example is with in-text citations in parentheses with, e.g., included. There is evidence that sadness can help you process information more systematically \citep[e.g., ][]{Phelps2014}. Notice how the citation automatically includes et al. because it has been cited previously \citep{Phelps2014}. In order to cite in the format author (year) you use \code{$\backslash$cite\{\}}). \cite{Pessoa2008} showed interconnectivity between ``emotional" and ``cognitive" regions in the brain (e.g., amygdala and DLPFC, respectively). You can cite with page numbers like this \citep[p.~23]{Pessoa2013}. You can also insert citations that are only included in the reference list but not in text like this \nocite{psych}. The last examples I will show are with displaying the citation number [\citenum{Pessoa2013}], author only \citeauthor{Pessoa2013}, and year only \citeyear{Pessoa2013}. \LaTeX will automatically include all of these in your reference list and for those with that are numbered or end with et al. it will automatically update as you add or remove references. 
 % You can find other citation styles here: ftp://ftp.dante.de/pub/tex/biblio/bibtex/contrib/apacite/apacite.pdf
 
 
@@ -192,11 +205,8 @@ You can also add nicely colored comments that are great for remind and edits.
 
 %%%%%%%%%%%%%% Participants
 \subsection{Participants} % Secondary heading
-We had 54 participants (50\% female; see Table~\ref{tab:maintable}). Insert more information about the participants.  % In order to use type a percent sign you have to type \%
-
-%%%%%%%%%%%%%% Materials
-\subsection{Materials} % Secondary heading
-Participants rated their emotions on a sliding scale 1 = \textit{Not emotional} to 100 = \textit{Intense emotion}.% Not emotional and Intense emotion are italicized.
+We had 54 participants (50\% female; see Table~\ref{tab:maintable}). % In order to use type a percent sign you have to type \%
+Insert more information about the participants. There are several different functions that can be used to make tables in \LaTeX. The tabular environment (see \cref{tab:maintable}) is fairly simple but if you want to manipulate the width of the columns and force the table to be page width I suggested the tabu environment (see \cref{tab:Models} in Results). Alternatively, there is the \code{xtable()} R function in the xtable package which tables any table or matrix (e.g., an anova summary output table) and converts it into \LaTeX~table format. % PS that is what I did for Table 2. 
 
 % Making Tables in LaTeX are easy and you can customize them however you want. 
 \begin{table}[t] % The [t] indicates to put the table on the top of the page
@@ -213,6 +223,12 @@ Male & 27\\
 \caption{\label{tab:maintable} Frequency separated by gender and emotion condition.} % Creates the caption for the figure and the label which allows you to reference them in text.
 \end{table} % ends table
 
+
+%%%%%%%%%%%%%% Materials
+\subsection{Materials} % Secondary heading
+Participants rated their emotions on a sliding scale 1 = \textit{Not emotional} to 100 = \textit{Intense emotion}.% Not emotional and Intense emotion are italicized.
+
+
 %%%%%%%%%%%%%% Procedures
 \subsection{Procedures} % Secondary heading
 They watched each movie clip and then rated their emotions. More information about procedures with sample \textbf{bold} text. You might have a figure to illustrate your design. You can either create them in R or upload figures from JPEGs, PNGs, or PDFs. For example see Figure~\ref{fig:Rlogo}.
@@ -222,7 +238,7 @@ They watched each movie clip and then rated their emotions. More information abo
 \begin{figure}[H] % When uploading image must specifiy position. [H] indicatest to place here (where it is referenced).
 % For other options see: https://www.sharelatex.com/learn/Positioning_images_and_tables
 \centering % Center image
-\includegraphics[width=2in]{Rlogo.png} % Calls in the file and specifies dimensions.
+\includegraphics[width=1.25in]{Rlogo.png} % Calls in the file and specifies dimensions.
 \caption{\label{fig:Rlogo}Type your figure caption here. Ex. This is the R studio logo.} % Creates the caption for the figure and the label which allows you to reference them in text.
 \end{figure}
 
@@ -265,13 +281,13 @@ or
 #### You can run this chucks of via R first to confirm you have no errors before compling them into the document. 
 
 # I have created a function that will take your p-value and print it an APA version
-apa.p.value <- function(x) { 
-if(x > .1) {paste("> ", ".05", sep="")} # If p value is greater than .1 then print "> .05"
-if(x > .05 & x <= .1) {paste("= ", round(x,2), sep="")} # If p value is greater than .05 but less than .1 then print "= " + actually p-value rounded to 2 decimal places
-if(x > .01 & x <= .05) {paste("= ", round(x,2), sep="")} # If p value is greater than .01 but less than .05 then print "= " + actually p-value rounded to 2 decimal places
+apa.p.value <- function(x) {
+  if(x > .1) {return(paste("> ", ".05", sep=""))} # If p value is greater than .1 then print "> .05"
+  if(x > .05 & x <= .1) {return(paste("= ", gsub("0\\.","\\.", round(x,2)), sep=""))} # If p value is greater than .05 but less than .1 then print "= " + actually p-value rounded to 2 decimal places
+  if(x > .01 & x <= .05) {if(round(x,2)==.05){return(paste("= ", gsub("0\\.","\\.", round(x,3)), sep=""))}else{return(paste("= ", gsub("0\\.","\\.", round(x,2)), sep=""))}} # If p value is greater than .01 but less than .05 then print "= " + actually p-value rounded to 2 decimal places
 # alternatively can be {paste("< ", ".05", sep="")} which prints "< .05"
-if(x > .001 & x <= .01) {paste("< ", ".01", sep="")}  # If p value is greater than .001 but less than .01 then print "> .01"
-if(x < .001) {paste("< ", ".001", sep="")} # If p value is greater than .001 then print "> .001"
+  if(x > .001 & x <= .01) {return(paste("< ", ".01", sep=""))}  # If p value is greater than .001 but less than .01 then print "> .01"
+  if(x < .001) {return(paste("< ", ".001", sep=""))} # If p value is greater than .001 then print "> .001"
 }
 
 
@@ -292,9 +308,24 @@ sum.data <- describeBy(ip, group = emotion, mat = T) # Get summary statistics se
 
 % \Sexpr{} allows you to print info from R code into the text
 
-We found a significant difference in information processing style based on emotion, \textit{F}(\Sexpr{results1["emotion", "Df"]}, \Sexpr{results1["Residuals", "Df"]}) = \Sexpr{round(results1["emotion", "F value"],2)}, \textit{p} \Sexpr{apa.p.value(results1["emotion", "Pr(>F)"])}, Partial $\eta^2$ = \Sexpr{round(esize["emotion", "eta.sq.part"],2)}. Those that were sad (\textit{M} = \Sexpr{round(sum.data[2, "mean"],2)}, \textit{SD} = \Sexpr{round(sum.data[2, "sd"],2)}) were used more analytic processing style than those who were in the happy condition (\textit{M} = \Sexpr{round(sum.data[1, "mean"],2)}, \textit{SD} = \Sexpr{round(sum.data[1, "sd"],2)}; see Figure~\ref{fig:mainplot}). Other common effect sizes $R^2$ and $r^2$. 
+We found a significant difference in information processing style based on emotion, \textit{F}(\Sexpr{results1["emotion", "Df"]}, \Sexpr{results1["Residuals", "Df"]}) = \Sexpr{round(results1["emotion", "F value"],2)}, \textit{p} \Sexpr{apa.p.value(results1["emotion", "Pr(>F)"])}, Partial $\eta^2$ = \Sexpr{round(esize["emotion", "eta.sq.part"],2)}. Those that were sad (\textit{M} = \Sexpr{round(sum.data[2, "mean"],2)}, \textit{SD} = \Sexpr{round(sum.data[2, "sd"],2)}) were used more analytic processing style than those who were in the happy condition (\textit{M} = \Sexpr{round(sum.data[1, "mean"],2)}, \textit{SD} = \Sexpr{round(sum.data[1, "sd"],2)}; see Figure~\ref{fig:mainplot} and Table~\ref{tab:Models}). Other common effect sizes $R^2$ and $r^2$. 
 
 
+\begin{table}[H]
+\caption{\label{tab:Models}An ANOVA Summary Table for the Model.}
+\centering
+\noindent\begin{tabu}to \linewidth{X[1l]X[1c]X[1c]X[1c]X[1c]X[1c]}
+\hline
+\raggedright
+ & Df & Sum Sq & Mean Sq & F value & \textit{p}  \\\hline
+Emotion & 1 & 12837.90 & 12837.90 & 93.82 & $^\dagger$ \\ 
+Residuals & 52 & 7115.73 & 136.84 & -- & --  \\\hline
+\multicolumn{6}{p{\linewidth}}{\emph{Note}. $^\dagger$ indicates \textit{p} < .001.}
+\end{tabu}
+\end{table}
+
+
+A ``clever'' alternative to long format of references is with \code{$\backslash$cref\{\}} function which automatically types table or figure for you and can insert multiple references at once. For example, see \cref{fig:mainplot,fig:Rlogo,tab:maintable}
 
 % Creating a figure with R and inserting it.
 \begin{figure}[t] % Commands to include a figure, [t] indicates to place the figure at the top.
@@ -334,27 +365,65 @@ size=.3) + # Set size of error bars
 \end{figure}
 
 
+% This is another neat trick that allows you to make panel figures
+\begin{figure}[H]
+ 	 \setlength{\belowcaptionskip}{-10pt} % Changes spacing for sub caption
+ \centering
+ \begin{subfigure}[H]{.4\textwidth} % Specifies the width of the figure
+ \centering
+ \includegraphics[width=\linewidth]{plots/GNI6.pdf} % Relative path
+          \caption{}\label{fig:GTNorm} % Sub label to refer to it in text
+ \end{subfigure} % End the sub figure
+ \begin{subfigure}[H]{.4\textwidth} % Add panel b
+ \centering
+ \includegraphics[width=\linewidth]{plots/GOI6.pdf}
+         \caption{}\label{fig:GFOver}
+ \end{subfigure} % The empty space below creates a line break for the next figure it needed just add more figures after the space
+
+ \begin{minipage}[H]{\textwidth} % This creates a mini page for the caption, not always needed but can help in some situations
+ 	 \vspace*{18pt} % Spacing
+ \caption{\label{fig:Estimation} When estimated together, the GPC properly estimated the paraters; however, when analyzed separately, some parameters were overestimated. (\subref{fig:GTNorm}) Item 10 when estimated together (a = 3.08) (\subref{fig:GFOver}) when estimated separately (a = 6.76).} %This shows you how to reference sub figures
+ % \vspace*{-24pt}
+ \end{minipage}
+\end{figure}
+%\clearpage % Useful if LaTeX makes only one or two lines of the next section on the figure page.
 
 
 %%%%%%%%%%%%%%%%% Discussion
 \section{Discussion} % Primary heading
-I hope that you were able to learn the basic elements of APA formatting in \LaTeX with this template. If you find any issues or have any comments of suggestions please contact me \href{mailto:3dbrano3@csu.fullerton.edu}{3dbrano3@csu.fullerton.edu}. Additionally, please cite me when you use this template in addition to all of the packages that made this possible (all citations below and BibTex versions in example.bib): R Core team, Rmisc package, psych package, lsr package, ggplot package, plyr package, lattice package. 
+I hope that you were able to learn the basic elements of APA formatting in \LaTeX~with this template. If you find any issues or have any comments of suggestions please contact me \href{mailto:3dbrano3@csu.fullerton.edu}{3dbrano3@csu.fullerton.edu}. Additionally, please cite me when you use this template in addition to all of the packages that made this possible (all citations below and BibTex versions in example.bib): R Core team, Rmisc package, psych package, lsr package, ggplot package, plyr package, lattice package. 
 
 \bibliography{example} % This is where I attached the bibliography file to the document
 \nocite{*} % Include all references in bibliography even if they are not included even if they are not cited in the document. Useful for citing R and R packages.
 
 \newpage
-\begin{landscape}
 \appendix %Starts the appendix
-\section{Landscape}
+
+\begin{landscape}
+% \appendix %Starts the appendix
+\section{Creating a single Landscape Page for Appendices/Figures}
 \pagenumbering{gobble} %removes page number
 \fancyhf{} % sets both header and footer to nothing
 \renewcommand{\headrulewidth}{0pt} % Removes the header 
-\begin{figure} % You can also use sidewaysfigure or sidewaystable if you dont want to rotate the page, but just the figure
+% \begin{figure} % You can also use sidewaysfigure or sidewaystable if you dont want to rotate the page, but just the figure
     \centering % Center image
     \includegraphics[width=2in]{Rlogo.png}
-    \caption{Demonstration of creating landscape figures in \LaTeX}
-    \label{fig:PropProf}
-\end{figure}
+    % \caption{Demonstration of creating landscape figures in \LaTeX}
+    % \label{fig:PropProf}
+% \end{figure}
 \end{landscape}
+
+
+\section{FlexMIRT Output: Nominal Response Model for all Models Plots Together and Separate} \label{sec:PNRM} % Creates Appendix Section and label to reference it in text
+% This next few lines of code is very useful. It will all you to place multiple figures/plots on one page. This is particularly useful for having to insert your output for statistics assignments.
+\begin{figure} % Forces the pdfs to be on the same page as the section header
+\includepdf[pages={1-9},offset=0cm -1cm % select which pages you want and how to offset x then y: nup is the dimensions. Fancy removes headers (optional) and finally you specify the relative location of the pdf file
+    frame,
+    nup=3x3]{plots/Plots.pdf}
+\end{figure}
+\includepdf[pages={10-},  nup=4x4, % this was split into two because of the header from the section label. this prints the rest of the pages from the pdf.
+frame,pagecommand={\thispagestyle{fancy}}]{plots/Plots.pdf}
+
+
+
 \end{document}
